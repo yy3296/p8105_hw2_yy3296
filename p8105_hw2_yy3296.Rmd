@@ -77,3 +77,15 @@ trans_ent %>%
   select(station_name, line) %>% 
   distinct
 ```
+
+### Problem 2
+
+I clean the Mr. Trash Wheel sheet including specifing the sheet in the Excel file and to omit non-data entries, omitting rows that do not include dumpster-specific data, and rounding the number of sports balls to the nearest integer and converts the result to an integer variable.Then, I add a new variable "TrashWheel", and named "MrTrashWheel" which can represent Mr. Trash Wheel dataset in combined dataset. 
+
+```{r}
+clean_MrTrashWheel = 
+  read_excel("data/Trash Wheel Collection Data (1).xlsx", range = "A2:N549") %>%
+  janitor::clean_names() %>%
+  mutate(sports_balls = as.integer(round(sports_balls, 0)),
+         TrashWheel = "MrTrashWheel")
+```
