@@ -89,3 +89,13 @@ clean_MrTrashWheel =
   mutate(sports_balls = as.integer(round(sports_balls, 0)),
          TrashWheel = "MrTrashWheel")
 ```
+
+I clean the Professor Trash Wheel sheet including specifing the sheet in the Excel file and to omit non-data entries, omitting rows that do not include dumpster-specific data, and transferring the year variable into character.Then, I add a new variable "TrashWheel", and named "ProTrashWheel" which can represent Professor Trash Wheel dataset in combined dataset. 
+
+```{r}
+clean_ProTrashWheel = 
+  read_excel("data/Trash Wheel Collection Data (1).xlsx", sheet = "Professor Trash Wheel", range = "A2:M96") %>%
+  janitor::clean_names() %>%
+  mutate(TrashWheel = "ProTrashWheel",
+         year = as.character(year))
+```
