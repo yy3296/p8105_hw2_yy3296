@@ -109,3 +109,18 @@ combine_Mr_Pro = bind_rows(clean_MrTrashWheel, clean_ProTrashWheel)
 * There are `r nrow(combine_Mr_Pro)` observations, `r ncol(combine_Mr_Pro)` variables which are `r colnames(combine_Mr_Pro)`. 
 * The total weight of trash collected by Professor Trash Wheel is `r sum(select(clean_ProTrashWheel, weight_tons))`
 * The total number of sports balls collected by Mr. Trash Wheel in 2020 is `r sum(select(filter(select(clean_MrTrashWheel, year, sports_balls), year == 2020), sports_balls))`.
+
+### Problem 3
+
+I clean the data in pols-month.csv and break up the variable mon into integer variables year, month, and day. Then, I replace month number with month name. In addition, I create a president variable taking values gop and dem, and I remove prez_dem, prez_gop, and the day variable by using select function.
+
+```{r}
+clean_pols_month = 
+  read.csv("data/fivethirtyeight_datasets/pols-month.csv") %>%
+  separate(mon, into = c("year", "month", "day"), sep = "-") %>%
+  mutate(month = recode(month, "01" = "January", "02" = "February", "03" = "March", "04" = "April", "05" = "May", "06" = "June", "07" = "July", "08" = "August", "09" = "September", "10" = "October", "11" = "November", "12" = "December"), 
+         president = prez_gop,
+         president = as.character(president),
+         president = recode(president, "0" = "dem", "1" = "gop")) %>%
+  select(-day, -prez_dem, -prez_gop)
+```
