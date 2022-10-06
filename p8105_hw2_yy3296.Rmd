@@ -134,7 +134,7 @@ clean_snp =
   mutate(year = as.integer(year) + 2000, year = ifelse(year >= 2050, year-100, year), month = as.integer(month)) %>%
   select(year, month, everything()) %>%
   arrange(year, month) %>%
-  mutate(month = recode(month, "1" = "January", "2" = "February", "3" = "March", "4" = "April", "5" = "May", "6" = "June", "7" = "July", "8" = "August", "9" = "September", "10" = "October", "11" = "November", "12" = "December")) 
+  mutate(month = recode(month, "1" = "January", "2" = "February", "3" = "March", "4" = "April", "5" = "May", "6" = "June", "7" = "July", "8" = "August", "9" = "September", "10" = "October", "11" = "November", "12" = "December"), year = as.character(year)) 
 
 ```
 
@@ -151,3 +151,15 @@ clean_unemployment =
   janitor::clean_names() %>%
   mutate(year = as.character(year))
 ```
+
+I join the datasets by merging clean_pols_month into clean_snp, and merging clean_unemployment into the result.
+
+```{r}
+merge_snp_pols = left_join(clean_pols_month, clean_snp, by = c("year", "month"))
+merge_snp_pols_unemployment = left_join(merge_snp_pols, clean_unemployment, by = c("year", "month"))
+```
+
+* The dataset of pols-month.csv contains the variables including `r colnames(clean_pols_month)`
+* The dataset of snp.csv contains the variables including `r colnames(clean_snp)`
+* The dataset of unemployment.csv contains the variables including `r colnames(clean_unemployment)`
+* For the resulting dataset, the dimension is `r nrow(merge_snp_pols_unemployment)` rows * `r ncol(merge_snp_pols_unemployment)` columns, the range of the years is `r range(merge_snp_pols_unemployment$year)`. The dataset of merge_snp_pols_unemployment contains the variables including `r colnames(merge_snp_pols_unemployment)`
