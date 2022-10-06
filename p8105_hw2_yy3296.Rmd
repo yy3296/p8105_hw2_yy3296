@@ -99,3 +99,13 @@ clean_ProTrashWheel =
   mutate(TrashWheel = "ProTrashWheel",
          year = as.character(year))
 ```
+
+I combine tidy Mr. Trash Wheel dataset with tidy Professor Trash Wheel dataset. 
+
+```{r}
+combine_Mr_Pro = bind_rows(clean_MrTrashWheel, clean_ProTrashWheel)
+```
+
+* There are `r nrow(combine_Mr_Pro)` observations, `r ncol(combine_Mr_Pro)` variables which are `r colnames(combine_Mr_Pro)`. 
+* The total weight of trash collected by Professor Trash Wheel is `r sum(select(clean_ProTrashWheel, weight_tons))`
+* The total number of sports balls collected by Mr. Trash Wheel in 2020 is `r sum(select(filter(select(clean_MrTrashWheel, year, sports_balls), year == 2020), sports_balls))`.
